@@ -19,14 +19,16 @@ public class MenuFragment extends Fragment {
 
     private List<String> _menu = new ArrayList<>();
 
+    public MenuFragment() {
+        _menu.add("BMI");
+        _menu.add("Weight");
+        _menu.add("Setup");
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        _menu.add("kit");
-        _menu.add("kat");
-        _menu.add("kfc");
-        _menu.add("mac");
 
         final ArrayAdapter<String> menuAdapter = new ArrayAdapter<>(
                 getActivity(),
@@ -41,11 +43,15 @@ public class MenuFragment extends Fragment {
         menuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("MENU", "Select: " + _menu.get(position));
+                Log.d("MENU", "Click on menu: " + _menu.get(position));
 
-                _menu.add("Test");
-
-                menuAdapter.notifyDataSetChanged();
+                getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.main_view, new BMIFragment())
+                        .addToBackStack(null)
+                        .commit()
+                ;
             }
         });
 
