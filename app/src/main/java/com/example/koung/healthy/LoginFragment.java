@@ -13,7 +13,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class LoginFragment extends Fragment {
+
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -30,31 +38,41 @@ public class LoginFragment extends Fragment {
 
     private void onClickBtn() {
         Button btn = getView().findViewById(R.id.login_btn);
-        final EditText login = getView().findViewById(R.id.login_username);
-        final EditText password = getView().findViewById(R.id.login_password);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String _login = login.getText().toString();
-                String _password = password.getText().toString();
+                EditText textEmail = getView().findViewById(R.id.login_email);
+                EditText textPassword = getView().findViewById(R.id.login_password);
 
-                if (_login.isEmpty() || _password.isEmpty()) {
-                    Toast.makeText(getActivity(), "Fill the empty", Toast.LENGTH_SHORT).show();
-                    Log.d("LOGIN", "Login failure some attribute was missing");
-                } else if (_login.equals("admin") && _password.equals("admin")) {
-                    Toast.makeText(getActivity(), "Login passed", Toast.LENGTH_SHORT).show();
-                    Log.d("LOGIN", "Login passed");
-                    getActivity()
-                            .getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.main_view, new MenuFragment())
-                            .addToBackStack(null)
-                            .commit();
-                } else {
-                    Log.d("LOGIN", "Login failure");
-                    Toast.makeText(getActivity(), "password invalid", Toast.LENGTH_SHORT).show();
-                }
+                String email = textEmail.getText().toString();
+                String password = textPassword.getText().toString();
+
+                auth.signInWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        FirebaseUser user = authResult.getUser();
+
+                        if (user.isEmailVerified()) {
+                            getActivity()
+                                    .getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.main_view, new MenuFragment())
+                                    .addToBackStack(null)
+                                    .commit()
+                            ;
+                        } else {
+                            Toast.makeText(getActivity(), "Please verify email please", Toast.LENGTH_SHORT).show();
+                            Log.d("LOGIN", "Email not verify yet");
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(), "Email or Password invalid", Toast.LENGTH_SHORT).show();
+                        Log.d("LOGIN", "Email or Password invalid");
+                    }
+                });
             }
         });
     }

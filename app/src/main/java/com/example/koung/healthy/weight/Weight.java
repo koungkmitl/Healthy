@@ -11,7 +11,6 @@ public class Weight {
     public Weight(String date, int weight, String status) {
         this.date = date;
         this.weight = weight;
-
         this.status = status;
     }
 

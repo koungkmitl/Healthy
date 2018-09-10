@@ -12,6 +12,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.koung.healthy.weight.WeightFragment;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,13 +47,31 @@ public class MenuFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d("MENU", "Click on menu: " + _menu.get(position));
 
-                getActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.main_view, new BMIFragment())
-                        .addToBackStack(null)
-                        .commit()
-                ;
+                if (position == 0) {
+                    getActivity()
+                            .getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.main_view, new BMIFragment())
+                            .addToBackStack(null)
+                            .commit()
+                    ;
+                } else if (position == 1) {
+                    getActivity()
+                            .getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.main_view, new WeightFragment())
+                            .addToBackStack(null)
+                            .commit()
+                    ;
+                } else {
+//                    getActivity()
+//                            .getSupportFragmentManager()
+//                            .beginTransaction()
+//                            .replace(R.id.main_view, new BMIFragment())
+//                            .addToBackStack(null)
+//                            .commit()
+//                    ;
+                }
             }
         });
 

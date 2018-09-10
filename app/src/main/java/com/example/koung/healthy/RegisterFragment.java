@@ -12,7 +12,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class RegisterFragment extends Fragment {
+
+    private FirebaseAuth mauth = FirebaseAuth.getInstance();
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -34,26 +42,63 @@ public class RegisterFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String _username = ((EditText) getView().findViewById(R.id.register_username)).getText().toString();
-                String _password = ((EditText) getView().findViewById(R.id.register_password)).getText().toString();
-                String _name = ((EditText) getView().findViewById(R.id.register_age)).getText().toString();
-                String _age = ((EditText) getView().findViewById(R.id.register_age)).getText().toString();
+                String email = ((EditText) getView().findViewById(R.id.register_email)).getText().toString();
+                String password = ((EditText) getView().findViewById(R.id.register_password)).getText().toString();
+                String rePassword = ((EditText) getView().findViewById(R.id.register_repassword)).getText().toString();
 
-                if (_username.isEmpty() || _password.isEmpty() || _name.isEmpty() || _age.isEmpty()) {
-                    Toast.makeText(getActivity(), "กรุณากรอกข้อมูลให้ครบถ้วน", Toast.LENGTH_SHORT).show();
-                    Log.d("REGISTER", "Register failure some attribute was missing");
-                } else if (_username.equals("admin")) {
-                    Toast.makeText(getActivity(), "username already exists", Toast.LENGTH_SHORT).show();
-                    Log.d("REGISTER", "Register failure attribute username is exists");
+                if (email.isEmpty() || password.isEmpty() || rePassword.isEmpty()) {
+                    Log.d("REGISTER", "Some attribute was missing");
+                    Toast.makeText(getActivity(), "Some attribute was missing", Toast.LENGTH_SHORT).show();
+                } else if (password.length() < 6) {
+                    Log.d("REGISTER", "Password less than 6");
+                    Toast.makeText(getActivity(), "Password less than 6", Toast.LENGTH_SHORT).show();
+                } else if (password.equals(rePassword)) {
+
+                    mauth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                        @Override
+                        public void onSuccess(AuthResult authResult) {
+                            Log.d("REGISTER", "Register is successful");
+                            Toast.makeText(getContext(), "Success", Toast.LENGTH_SHORT).show();
+
+                            FirebaseUser user = authResult.getUser();
+
+                            sendMail(user);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("REGISTER", e.getMessage());
+                            Toast.makeText(getActivity(), "Failure", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+//                    Log.d("REGISTER", "Register is successful");
                 } else {
-                    Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
-                    Log.d("REGISTER", "Register successful");
-
-                    ((EditText) getView().findViewById(R.id.register_username)).getText().clear();
-                    ((EditText) getView().findViewById(R.id.register_name)).getText().clear();
-                    ((EditText) getView().findViewById(R.id.register_age)).getText().clear();
-                    ((EditText) getView().findViewById(R.id.register_password)).getText().clear();
+                    Log.d("REGISTER", "Some error was found");
+                    Toast.makeText(getActivity(), "Some error was found", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+    }
+
+    public void sendMail(FirebaseUser user) {
+        user.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d("LOGIN", "Send verify email successful");
+                getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .addToBackStack(null)
+                        .replace(R.id.main_view, new LoginFragment())
+                        .commit()
+                        ;
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("LOGIN", "Send vefiry email failure");
+                Toast.makeText(getActivity(), "Send Verify error", Toast.LENGTH_SHORT).show();
             }
         });
     }
