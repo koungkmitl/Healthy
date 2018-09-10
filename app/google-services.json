@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1024654139968",
+    "firebase_url": "https://db-healthy-9517d.firebaseio.com",
+    "project_id": "db-healthy-9517d",
+    "storage_bucket": "db-healthy-9517d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1024654139968:android:09f806b79c29e0d7",
+        "android_client_info": {
+          "package_name": "com.example.koung.healthy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1024654139968-3dogbi7enn770ji8ar65mq8ce27g3v9f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCspGjniG6Bg7zPzzkP1UR1p3obvL0WAsk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
