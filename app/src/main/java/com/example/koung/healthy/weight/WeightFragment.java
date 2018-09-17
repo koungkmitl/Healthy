@@ -16,7 +16,11 @@ import java.util.List;
 
 public class WeightFragment extends Fragment {
 
-    private List<Weight> weight = new ArrayList<>();
+    private List<Weight> weight;
+
+    public WeightFragment() {
+        weight = new ArrayList<>();
+    }
 
     @Nullable
     @Override
@@ -31,8 +35,8 @@ public class WeightFragment extends Fragment {
     }
 
     private void aaa() {
-        weight.add(new Weight("aaa", 2, "bbb"));
-        weight.add(new Weight("bbb", 3, "aaa"));
+        weight.add(new Weight("aaa", 2.090, "bbb"));
+        weight.add(new Weight("bbb", 3.009, "aaa"));
 
         WeightAdapter weightAdapter = new WeightAdapter(getContext(),
                                                         R.layout.fragment_weight_item,

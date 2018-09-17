@@ -23,7 +23,6 @@ public class WeightAdapter extends ArrayAdapter<Weight> {
                          int resource,
                          @NonNull List<Weight> objects) {
         super(context, resource, objects);
-
         this.context = context;
         this.weights = (ArrayList<Weight>) objects;
     }
@@ -39,18 +38,16 @@ public class WeightAdapter extends ArrayAdapter<Weight> {
                 parent,
                 false);
 
-        TextView date = (TextView) weightItem.findViewById(R.id.fragment_weight_date);
-        TextView weight = (TextView) weightItem.findViewById(R.id.fragment_weight_weight);
-        TextView updown = (TextView) weightItem.findViewById(R.id.fragment_weight_updown);
+        TextView dateText = (TextView) weightItem.findViewById(R.id.fragment_weight_date);
+        TextView weightText = (TextView) weightItem.findViewById(R.id.fragment_weight_weight);
+        TextView updownText = (TextView) weightItem.findViewById(R.id.fragment_weight_updown);
 
-        Weight aaa = weights.get(position);
+        Weight weight = weights.get(position);
 
-        date.setText(aaa.getDate());
-        weight.setText(String.valueOf(aaa.getWeight()));
-        updown.setText(aaa.getStatus());
+        dateText.setText(weight.getDate());
+        weightText.setText(String.valueOf(weight.getWeight()));
+        updownText.setText(weight.getStatus());
 
         return weightItem;
-
-//        return super.getView(position, convertView, parent);
     }
 }

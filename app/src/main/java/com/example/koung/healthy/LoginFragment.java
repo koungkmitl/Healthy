@@ -26,17 +26,21 @@ public class LoginFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        onClickBtn();
+
+        checkIsLogin();
+        onClickLogin();
         onClickRegister();
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
-    private void onClickBtn() {
+    private void onClickLogin() {
         Button btn = getView().findViewById(R.id.login_btn);
 
         btn.setOnClickListener(new View.OnClickListener() {
@@ -54,11 +58,13 @@ public class LoginFragment extends Fragment {
                         FirebaseUser user = authResult.getUser();
 
                         if (user.isEmailVerified()) {
+                            Log.d("LOGIN", "Login passed");
+                            Toast.makeText(getActivity(), "Login Complete email was verified", Toast.LENGTH_SHORT).show();
+
                             getActivity()
                                     .getSupportFragmentManager()
                                     .beginTransaction()
                                     .replace(R.id.main_view, new MenuFragment())
-                                    .addToBackStack(null)
                                     .commit()
                             ;
                         } else {
@@ -85,12 +91,26 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
                 getActivity()
                         .getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.main_view, new RegisterFragment())
-                            .addToBackStack(null)
-                        .commit();
+                        .beginTransaction()
+                        .replace(R.id.main_view, new RegisterFragment())
+                        .addToBackStack(null)
+                        .commit()
+                ;
             }
         });
+    }
+
+    public void checkIsLogin() {
+        if (auth.getUid() != null) {
+            Log.d("LOGIN", "User was Login yet");
+            getActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.main_view, new MenuFragment())
+                    .commit()
+            ;
+        }
+        Log.d("LOGIN", "User is not Login or user Signout");
     }
 
 }

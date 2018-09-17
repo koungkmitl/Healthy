@@ -12,34 +12,61 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.example.koung.healthy.weight.WeightFragment;
+import com.example.koung.healthy.weight.WeightFromFragment;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MenuFragment extends Fragment {
 
-    private List<String> _menu = new ArrayList<>();
+    private List<String> _menu;
+    private FirebaseAuth firebaseAuth;
 
     public MenuFragment() {
+        this._menu = new ArrayList<>();
+        this.firebaseAuth = FirebaseAuth.getInstance();
+
         _menu.add("BMI");
-        _menu.add("Weight");
-        _menu.add("Setup");
+        _menu.add("Add Weight");
+        _menu.add("Weight History");
+        _menu.add("Logout");
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_menu, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        showMenu();
+    }
 
+    public void showMenu() {
+
+        /**
+         * First: create List and ArrayAdapter
+         * Second: findViewById(ListView)
+         * Third: just combine between List and ArrayAdapter
+         * Fourth: setAdapter for ListView => ListView.setAdapter
+         */
+        // Define Adapter with ArrayList
         final ArrayAdapter<String> menuAdapter = new ArrayAdapter<>(
                 getActivity(),
                 android.R.layout.simple_list_item_1,
                 _menu
         );
 
+        // Define ListView
         ListView menuList = getView().findViewById(R.id.menu_list);
 
+        //ListView set Adapter
         menuList.setAdapter(menuAdapter);
 
         menuList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -59,30 +86,30 @@ public class MenuFragment extends Fragment {
                     getActivity()
                             .getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.main_view, new WeightFragment())
+                            .replace(R.id.main_view, new WeightFromFragment())
+                            .addToBackStack(null)
+                            .commit()
+                    ;
+                } else if (position == 2){
+                    getActivity()
+                            .getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.main_view, new BMIFragment())
                             .addToBackStack(null)
                             .commit()
                     ;
                 } else {
-//                    getActivity()
-//                            .getSupportFragmentManager()
-//                            .beginTransaction()
-//                            .replace(R.id.main_view, new BMIFragment())
-//                            .addToBackStack(null)
-//                            .commit()
-//                    ;
+                    firebaseAuth.signOut();
+
+                    getActivity()
+                            .getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.main_view, new LoginFragment())
+                            .commit()
+                    ;
                 }
             }
         });
-
-
     }
-
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_menu, container, false);
-    }
-
 
 }

@@ -25,6 +25,7 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         onClickRegister();
     }
 
@@ -91,7 +92,7 @@ public class RegisterFragment extends Fragment {
                         .addToBackStack(null)
                         .replace(R.id.main_view, new LoginFragment())
                         .commit()
-                        ;
+                ;
 
             }
         }).addOnFailureListener(new OnFailureListener() {
