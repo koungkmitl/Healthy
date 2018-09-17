@@ -14,7 +14,7 @@
 
             <Button
                 android:text="Add Weight"
-                android:id="@+id/button_add"
+                android:id="@+id/fragment_weight_history_btn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

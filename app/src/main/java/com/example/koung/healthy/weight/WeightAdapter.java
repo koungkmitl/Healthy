@@ -38,15 +38,13 @@ public class WeightAdapter extends ArrayAdapter<Weight> {
                 parent,
                 false);
 
-        TextView dateText = (TextView) weightItem.findViewById(R.id.fragment_weight_date);
-        TextView weightText = (TextView) weightItem.findViewById(R.id.fragment_weight_weight);
-        TextView updownText = (TextView) weightItem.findViewById(R.id.fragment_weight_updown);
+        TextView dateText = (TextView) weightItem.findViewById(R.id.fragment_weight_item_date);
+        TextView weightText = (TextView) weightItem.findViewById(R.id.fragment_weight_item_weight);
 
         Weight weight = weights.get(position);
 
         dateText.setText(weight.getDate());
-        weightText.setText(String.valueOf(weight.getWeight()));
-        updownText.setText(weight.getStatus());
+        weightText.setText(weight.getWeight());
 
         return weightItem;
     }

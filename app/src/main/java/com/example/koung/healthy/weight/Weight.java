@@ -2,17 +2,14 @@ package com.example.koung.healthy.weight;
 
 public class Weight {
     private String date;
-    private Double weight;
-    private String status;
+    private String weight;
 
     public Weight() {
     }
 
-    public Weight(String date, Double weight, String status) {
-
+    public Weight(String date, String weight) {
         this.date = date;
         this.weight = weight;
-        this.status = status;
     }
 
     public String getDate() {
@@ -23,20 +20,11 @@ public class Weight {
         this.date = date;
     }
 
-    public Double getWeight() {
+    public String getWeight() {
         return weight;
     }
 
-    public void setWeight(Double weight) {
+    public void setWeight(String weight) {
         this.weight = weight;
     }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
 }
