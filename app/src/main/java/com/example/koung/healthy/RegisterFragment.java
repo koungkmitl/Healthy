@@ -85,6 +85,7 @@ public class RegisterFragment extends Fragment {
         user.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                mauth.signOut();
                 Log.d("LOGIN", "Send verify email successful");
                 getActivity()
                         .getSupportFragmentManager()

@@ -110,6 +110,7 @@ public class LoginFragment extends Fragment {
                     .commit()
             ;
         }
+
         Log.d("LOGIN", "User is not Login or user Signout");
     }
 
