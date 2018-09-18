@@ -52,33 +52,39 @@ public class LoginFragment extends Fragment {
                 String email = textEmail.getText().toString();
                 String password = textPassword.getText().toString();
 
-                auth.signInWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        FirebaseUser user = authResult.getUser();
+                if (email.isEmpty() || password.isEmpty()) {
+                    Log.d("LOGIN", "username or password not exists");
+                    Toast.makeText(getActivity(), "username or password not exists", Toast.LENGTH_SHORT).show();
+                } else {
+                    auth.signInWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                        @Override
+                        public void onSuccess(AuthResult authResult) {
+                            FirebaseUser user = authResult.getUser();
 
-                        if (user.isEmailVerified()) {
-                            Log.d("LOGIN", "Login passed");
-                            Toast.makeText(getActivity(), "Login Complete email was verified", Toast.LENGTH_SHORT).show();
+                            if (user.isEmailVerified()) {
+                                Log.d("LOGIN", "Login passed");
+                                Toast.makeText(getActivity(), "Login Complete email was verified", Toast.LENGTH_SHORT).show();
 
-                            getActivity()
-                                    .getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .replace(R.id.main_view, new MenuFragment())
-                                    .commit()
-                            ;
-                        } else {
-                            Toast.makeText(getActivity(), "Please verify email please", Toast.LENGTH_SHORT).show();
-                            Log.d("LOGIN", "Email not verify yet");
+                                getActivity()
+                                        .getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .replace(R.id.main_view, new MenuFragment())
+                                        .commit()
+                                ;
+                            } else {
+                                Toast.makeText(getActivity(), "Please verify email please", Toast.LENGTH_SHORT).show();
+                                Log.d("LOGIN", "Email not verify yet");
+                            }
                         }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getActivity(), "Email or Password invalid", Toast.LENGTH_SHORT).show();
-                        Log.d("LOGIN", "Email or Password invalid");
-                    }
-                });
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getActivity(), "Email or Password invalid", Toast.LENGTH_SHORT).show();
+                            Log.d("LOGIN", "Email or Password invalid");
+                        }
+                    });
+                }
+
             }
         });
     }
