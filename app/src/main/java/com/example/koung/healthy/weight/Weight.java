@@ -27,4 +27,5 @@ public class Weight {
     public void setWeight(String weight) {
         this.weight = weight;
     }
+
 }

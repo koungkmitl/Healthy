@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.koung.healthy.weight.WeightFromFragment;
+import com.example.koung.healthy.weight.WeightHistoryFragment;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -94,7 +95,7 @@ public class MenuFragment extends Fragment {
                     getActivity()
                             .getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.main_view, new BMIFragment())
+                            .replace(R.id.main_view, new WeightHistoryFragment())
                             .addToBackStack(null)
                             .commit()
                     ;

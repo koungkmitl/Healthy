@@ -3,6 +3,7 @@ package com.example.koung.healthy.weight;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.koung.healthy.R;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,12 +43,26 @@ public class WeightAdapter extends ArrayAdapter<Weight> {
 
         TextView dateText = (TextView) weightItem.findViewById(R.id.fragment_weight_item_date);
         TextView weightText = (TextView) weightItem.findViewById(R.id.fragment_weight_item_weight);
+        TextView statusText = (TextView) weightItem.findViewById(R.id.fragment_weight_item_status);
 
         Weight weight = weights.get(position);
 
         dateText.setText(weight.getDate());
         weightText.setText(weight.getWeight());
 
+        Log.d("ADAPTER", String.valueOf(weights.size()));
+        if (position == weights.size() - 1) {
+            statusText.setText("");
+        } else {
+            Double normal = Double.parseDouble(weights.get(position).getWeight());
+            Double more = Double.parseDouble(weights.get(position + 1).getWeight());
+
+            if (normal > more) {
+                statusText.setText("UP");
+            } else if (more > normal) {
+                statusText.setText("DOWN");
+            }
+        }
         return weightItem;
     }
 }
