@@ -30,13 +30,11 @@ public class WeightHistoryFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     private List<Weight> weights;
-    private List<Weight> demo;
 
     public WeightHistoryFragment() {
         this.firebaseAuth = FirebaseAuth.getInstance();
         this.firebaseFirestore = FirebaseFirestore.getInstance();
         this.weights = new ArrayList<>();
-        this.demo = new ArrayList<>();
     }
 
     @Nullable
