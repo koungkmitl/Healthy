@@ -61,6 +61,8 @@ public class WeightAdapter extends ArrayAdapter<Weight> {
                 statusText.setText("UP");
             } else if (more > normal) {
                 statusText.setText("DOWN");
+            } else {
+                statusText.setText("");
             }
         }
         return weightItem;

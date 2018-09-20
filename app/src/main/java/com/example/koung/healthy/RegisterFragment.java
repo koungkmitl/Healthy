@@ -72,7 +72,6 @@ public class RegisterFragment extends Fragment {
                             Toast.makeText(getActivity(), "Failure", Toast.LENGTH_SHORT).show();
                         }
                     });
-//                    Log.d("REGISTER", "Register is successful");
                 } else {
                     Log.d("REGISTER", "Some error was found");
                     Toast.makeText(getActivity(), "Some error was found", Toast.LENGTH_SHORT).show();
