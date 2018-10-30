@@ -106,7 +106,7 @@ public class LoginFragment extends Fragment {
         });
     }
 
-    public void checkIsLogin() {
+    private void checkIsLogin() {
         if (auth.getUid() != null) {
             Log.d("LOGIN", "User was Login yet");
             getActivity()

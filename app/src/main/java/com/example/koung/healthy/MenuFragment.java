@@ -12,6 +12,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.koung.healthy.sleep.SleepAdapter;
+import com.example.koung.healthy.sleep.SleepFragment;
 import com.example.koung.healthy.weight.WeightFromFragment;
 import com.example.koung.healthy.weight.WeightHistoryFragment;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +34,7 @@ public class MenuFragment extends Fragment {
         _menu.add("Add Weight");
         _menu.add("Weight History");
         _menu.add("Logout");
+        _menu.add("Sleep");
     }
 
     @Nullable
@@ -99,6 +102,13 @@ public class MenuFragment extends Fragment {
                             .addToBackStack(null)
                             .commit()
                     ;
+                } else if (position == 3) {
+                    getActivity()
+                            .getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.main_view, new SleepFragment())
+                            .addToBackStack(null)
+                            .commit();
                 } else {
                     firebaseAuth.signOut();
 

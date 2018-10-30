@@ -90,7 +90,7 @@ public class WeightHistoryFragment extends Fragment {
         .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                     weights.add(doc.toObject(Weight.class));
                 }
                 weightAdapter.notifyDataSetChanged();
