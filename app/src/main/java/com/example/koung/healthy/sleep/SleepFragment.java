@@ -1,6 +1,7 @@
 package com.example.koung.healthy.sleep;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,6 +26,7 @@ public class SleepFragment extends Fragment {
     private SQLiteDatabase database;
     private static final String SQL_LISTALL_SLEEP = "SELECT * FROM Sleep";
     private List<Sleep> sleepList;
+    private Cursor query;
 
     public SleepFragment() {
         database = getActivity().openOrCreateDatabase("SleepDB", MODE_PRIVATE, null);
@@ -45,6 +47,7 @@ public class SleepFragment extends Fragment {
 
         onClickAdd();
         onClickBack();
+        showListView();
     }
 
     private void onClickBack() {
@@ -80,6 +83,13 @@ public class SleepFragment extends Fragment {
     }
 
     private void showListView() {
+        String _date;
+        String _sleeptime;
+        String _wakeuptime;
+        String _duration;
+
+        String _format;
+
         SleepAdapter sleepAdapter = new SleepAdapter(
                 getActivity(),
                 R.layout.fragment_sleep_item,
@@ -87,11 +97,24 @@ public class SleepFragment extends Fragment {
         );
 
         ListView listView = getView().findViewById(R.id.sleep_listView_list);
-
         listView.setAdapter(sleepAdapter);
 
-        // query data from sqlite
+        sleepAdapter.clear();
 
+        query = database.rawQuery(SQL_LISTALL_SLEEP, null);
 
+        while(query.moveToNext()) {
+            _date = query.getString(1);
+            _sleeptime = query.getString(2);
+            _wakeuptime = query.getString(3);
+            _duration = query.getString(4);
+
+            _format = _sleeptime + ":" + _wakeuptime;
+
+            sleepList.add(new Sleep(_date, _format, _duration));
+        }
+
+        query.close();
+        sleepAdapter.notifyDataSetChanged();
     }
 }

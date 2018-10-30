@@ -1,13 +1,8 @@
 package com.example.koung.healthy.sleep;
 
 class CalculateDuration {
-    private String sleep;
-    private String wake;
-
-    public CalculateDuration(String sleep, String wake) {
-        this.sleep = sleep;
-        this.wake = wake;
-    }
+    private String hour;
+    private String minute;
 
     public CalculateDuration() {
     }
@@ -17,22 +12,20 @@ class CalculateDuration {
         String[] _sleepArray = sleep.split(":");
         String[] _wakeArray = wake.split(":");
 
-        return "df";
-    }
+        String hour;
+        String minute;
 
-    public String getSleep() {
-        return sleep;
-    }
+        int intSleep = (Integer.parseInt(_sleepArray[0]) * 3600) + (Integer.parseInt(_sleepArray[1]) * 60);
+        int intWake = (Integer.parseInt(_wakeArray[0]) * 3600) + (Integer.parseInt(_wakeArray[1]) * 60);
 
-    public void setSleep(String sleep) {
-        this.sleep = sleep;
-    }
+        if ( intSleep > intWake ) {
+            hour = String.valueOf(Math.round(86400 - (intSleep - intWake)) / 3600);
+            minute = String.valueOf(Math.round((86400 - (intSleep - intWake)) % 3600) / 60);
+            return hour + ":" + minute;
+        }
 
-    public String getWake() {
-        return wake;
-    }
-
-    public void setWake(String wake) {
-        this.wake = wake;
+        hour = String.valueOf(Math.round(86400 - (intWake - intSleep)) / 3600);
+        minute = String.valueOf(Math.round((86400 - (intWake - intSleep)) % 3600) / 60);
+        return hour + ":" + minute;
     }
 }

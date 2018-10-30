@@ -33,8 +33,8 @@ public class MenuFragment extends Fragment {
         _menu.add("BMI");
         _menu.add("Add Weight");
         _menu.add("Weight History");
-        _menu.add("Logout");
         _menu.add("Sleep");
+        _menu.add("Logout");
     }
 
     @Nullable
