@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,13 +24,17 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class SleepFragment extends Fragment {
 
-    private SQLiteDatabase database;
     private static final String SQL_LISTALL_SLEEP = "SELECT * FROM Sleep";
+    private SQLiteDatabase database;
     private List<Sleep> sleepList;
     private Cursor query;
 
     public SleepFragment() {
-        database = getActivity().openOrCreateDatabase("SleepDB", MODE_PRIVATE, null);
+        try {
+            database = getActivity().openOrCreateDatabase("SleepDB.db", MODE_PRIVATE, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         sleepList = new ArrayList<>();
     }
 
@@ -47,7 +52,8 @@ public class SleepFragment extends Fragment {
 
         onClickAdd();
         onClickBack();
-        showListView();
+//        showListView();
+        Log.d("SLEEP", "render page sleep menu");
     }
 
     private void onClickBack() {
@@ -82,39 +88,40 @@ public class SleepFragment extends Fragment {
         });
     }
 
-    private void showListView() {
-        String _date;
-        String _sleeptime;
-        String _wakeuptime;
-        String _duration;
-
-        String _format;
-
-        SleepAdapter sleepAdapter = new SleepAdapter(
-                getActivity(),
-                R.layout.fragment_sleep_item,
-                sleepList
-        );
-
-        ListView listView = getView().findViewById(R.id.sleep_listView_list);
-        listView.setAdapter(sleepAdapter);
-
-        sleepAdapter.clear();
-
-        query = database.rawQuery(SQL_LISTALL_SLEEP, null);
-
-        while(query.moveToNext()) {
-            _date = query.getString(1);
-            _sleeptime = query.getString(2);
-            _wakeuptime = query.getString(3);
-            _duration = query.getString(4);
-
-            _format = _sleeptime + ":" + _wakeuptime;
-
-            sleepList.add(new Sleep(_date, _format, _duration));
-        }
-
-        query.close();
-        sleepAdapter.notifyDataSetChanged();
-    }
+//    private void showListView() {
+//        Log.d("SLEEP", "show list view");
+//        String _date;
+//        String _sleeptime;
+//        String _wakeuptime;
+//        String _duration;
+//
+//        String _format;
+//
+//        SleepAdapter sleepAdapter = new SleepAdapter(
+//                getActivity(),
+//                R.layout.fragment_sleep_item,
+//                sleepList
+//        );
+//
+//        ListView listView = getView().findViewById(R.id.sleep_listView_list);
+//        listView.setAdapter(sleepAdapter);
+//
+//        sleepAdapter.clear();
+//
+//        query = database.rawQuery(SQL_LISTALL_SLEEP, null);
+//
+//        while(query.moveToNext()) {
+//            _date = query.getString(1);
+//            _sleeptime = query.getString(2);
+//            _wakeuptime = query.getString(3);
+//            _duration = query.getString(4);
+//
+//            _format = _sleeptime + ":" + _wakeuptime;
+//
+//            sleepList.add(new Sleep(_date, _format, _duration));
+//        }
+//
+//        query.close();
+//        sleepAdapter.notifyDataSetChanged();
+//    }
 }

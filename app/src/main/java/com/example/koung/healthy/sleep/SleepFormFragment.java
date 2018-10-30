@@ -32,7 +32,7 @@ public class SleepFormFragment extends Fragment {
     private ContentValues preInsert;
 
     public SleepFormFragment() {
-        database = getActivity().openOrCreateDatabase("SleepDB", MODE_PRIVATE, null);
+        database = getActivity().openOrCreateDatabase("SleepDB.db", MODE_PRIVATE, null);
         sleepList = new ArrayList<>();
         calculateDuration = new CalculateDuration();
         preInsert = new ContentValues();

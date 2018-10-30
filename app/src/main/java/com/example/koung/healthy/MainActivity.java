@@ -25,6 +25,11 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
             "wakeuptime VARCHAR(255)," +
             "duration VARCHAR(255))";
 
+    private void createDatabase() {
+        database = openOrCreateDatabase("SleepDB.db", MODE_PRIVATE, null);
+        database.execSQL(SQL_CREATE_DATABASE);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,10 +57,5 @@ public class MainActivity extends AppCompatActivity implements DatePickerDialog.
 
         TextView date = findViewById(R.id.weight_from_date);
         date.setText(sdf.format(calendar.getTime()));
-    }
-
-    private void createDatabase() {
-        database = openOrCreateDatabase("SleepDB", MODE_PRIVATE, null);
-        database.execSQL(SQL_CREATE_DATABASE);
     }
 }
