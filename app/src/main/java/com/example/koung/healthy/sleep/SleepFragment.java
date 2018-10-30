@@ -1,9 +1,12 @@
 package com.example.koung.healthy.sleep;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,8 +14,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.koung.healthy.MenuFragment;
 import com.example.koung.healthy.R;
@@ -20,22 +25,25 @@ import com.example.koung.healthy.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.content.Context.MODE_PRIVATE;
 
 public class SleepFragment extends Fragment {
 
-    private static final String SQL_LISTALL_SLEEP = "SELECT * FROM Sleep";
+    private static final String SQL_LISTALL_SLEEP = "SELECT * FROM sleep";
     private SQLiteDatabase database;
-    private List<Sleep> sleepList;
     private Cursor query;
 
+    private List<Sleep> sleepList;
+    private SleepAdapter sleepAdapter;
+    private ListView listView;
+
     public SleepFragment() {
-        try {
-            database = getActivity().openOrCreateDatabase("SleepDB.db", MODE_PRIVATE, null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         sleepList = new ArrayList<>();
+        sleepAdapter = new SleepAdapter(
+                getActivity(),
+                R.layout.fragment_sleep_item,
+                sleepList
+        );
+        listView = getView().findViewById(R.id.sleep_listView_list);
     }
 
     @Nullable
@@ -52,8 +60,8 @@ public class SleepFragment extends Fragment {
 
         onClickAdd();
         onClickBack();
-//        showListView();
-        Log.d("SLEEP", "render page sleep menu");
+        showListView();
+        onClickListView();
     }
 
     private void onClickBack() {
@@ -88,40 +96,45 @@ public class SleepFragment extends Fragment {
         });
     }
 
-//    private void showListView() {
-//        Log.d("SLEEP", "show list view");
-//        String _date;
-//        String _sleeptime;
-//        String _wakeuptime;
-//        String _duration;
-//
-//        String _format;
-//
-//        SleepAdapter sleepAdapter = new SleepAdapter(
-//                getActivity(),
-//                R.layout.fragment_sleep_item,
-//                sleepList
-//        );
-//
-//        ListView listView = getView().findViewById(R.id.sleep_listView_list);
-//        listView.setAdapter(sleepAdapter);
-//
-//        sleepAdapter.clear();
-//
-//        query = database.rawQuery(SQL_LISTALL_SLEEP, null);
-//
-//        while(query.moveToNext()) {
-//            _date = query.getString(1);
-//            _sleeptime = query.getString(2);
-//            _wakeuptime = query.getString(3);
-//            _duration = query.getString(4);
-//
-//            _format = _sleeptime + ":" + _wakeuptime;
-//
-//            sleepList.add(new Sleep(_date, _format, _duration));
-//        }
-//
-//        query.close();
-//        sleepAdapter.notifyDataSetChanged();
-//    }
+    private void showListView() {
+        database = getActivity().openOrCreateDatabase("my.db", Context.MODE_PRIVATE, null);
+
+        String _date;
+        String _sleeptime;
+        String _wakeuptime;
+        String _duration;
+
+        String _format;
+
+        listView.setAdapter(sleepAdapter);
+
+        sleepAdapter.clear();
+
+        query = database.rawQuery(SQL_LISTALL_SLEEP, null);
+
+        while(query.moveToNext()) {
+            _date = query.getString(0);
+            _sleeptime = query.getString(1);
+            _wakeuptime = query.getString(2);
+            _duration = query.getString(3);
+
+            _format = _sleeptime + " - " + _wakeuptime;
+
+            sleepList.add(new Sleep(_date, _format, _duration));
+        }
+
+        query.close();
+        database.close();
+        sleepAdapter.notifyDataSetChanged();
+    }
+
+    private void onClickListView() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Sleep _sleep = sleepList.get(position);
+
+            }
+        });
+    }
 }

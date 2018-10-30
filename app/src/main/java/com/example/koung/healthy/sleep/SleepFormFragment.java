@@ -32,7 +32,6 @@ public class SleepFormFragment extends Fragment {
     private ContentValues preInsert;
 
     public SleepFormFragment() {
-        database = getActivity().openOrCreateDatabase("SleepDB.db", MODE_PRIVATE, null);
         sleepList = new ArrayList<>();
         calculateDuration = new CalculateDuration();
         preInsert = new ContentValues();
@@ -52,7 +51,6 @@ public class SleepFormFragment extends Fragment {
 
         onClickBack();
         onClickAdd();
-        onClickBack();
     }
 
     private void onClickBack() {
@@ -72,45 +70,55 @@ public class SleepFormFragment extends Fragment {
     }
 
     private void onClickAdd() {
+        database = getActivity().openOrCreateDatabase("my.db", MODE_PRIVATE, null);
+
         Button addBtn = getView().findViewById(R.id.sleep_form_btn_save);
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String _date = ((EditText) getView().findViewById(R.id.sleep_form_text_date)).getText().toString();
-                String _sleepTime = ((EditText) getView().findViewById(R.id.sleep_form_text_sleep)).getText().toString();
-                String _wakeupTime = ((EditText) getView().findViewById(R.id.sleep_form_text_wake)).getText().toString();
+                EditText dateEdit = getView().findViewById(R.id.sleep_form_text_date);
+                EditText sleepTimeEdit = getView().findViewById(R.id.sleep_form_text_sleep);
+                EditText wakeupTimeEdit = getView().findViewById(R.id.sleep_form_text_wake);
+
+                String _date = dateEdit.getText().toString();
+                String _sleepTime = sleepTimeEdit.getText().toString();
+                String _wakeupTime = wakeupTimeEdit.getText().toString();
                 String _duration = calculateDuration.calculate(_sleepTime, _wakeupTime);
 
                 preInsert.clear();
 
-                preInsert.put("date", _date);
-                preInsert.put("sleeptime", _sleepTime);
-                preInsert.put("waketime", _wakeupTime);
-                preInsert.put("duration", _duration);
+                if (isEmpty()) {
+                    Toast.makeText(getActivity(), "Empty filed happen", Toast.LENGTH_SHORT).show();
+                    Log.d("SLEEP", "Empty filed");
+                } else {
+                    preInsert.put("date", _date);
+                    preInsert.put("sleeptime", _sleepTime);
+                    preInsert.put("wakeuptime", _wakeupTime);
+                    preInsert.put("duration", _duration);
 
-                database.insert("Sleep", null, preInsert);
-                database.close();
+                    database.insert("sleep", null, preInsert);
+                    database.close();
 
-                ((EditText) getView().findViewById(R.id.sleep_form_text_date)).getText().clear();
-                ((EditText) getView().findViewById(R.id.sleep_form_text_sleep)).getText().clear();
-                ((EditText) getView().findViewById(R.id.sleep_form_text_wake)).getText().clear();
+                    dateEdit.getText().clear();
+                    sleepTimeEdit.getText().clear();
+                    wakeupTimeEdit.getText().clear();
 
-                Toast.makeText(getActivity(), "Insert complete", Toast.LENGTH_SHORT).show();
-                Log.d("SLEEP", "Insert data to DB");
+                    Toast.makeText(getActivity(), "Insert complete", Toast.LENGTH_SHORT).show();
+                    Log.d("SLEEP", "Insert data to DB");
+                }
             }
         });
     }
 
-    private void onClickDate() {
-        EditText date = getView().findViewById(R.id.sleep_form_text_date);
+    private boolean isEmpty() {
+        String _date = ((EditText) getView().findViewById(R.id.sleep_form_text_date)).getText().toString();
+        String _sleepTime = ((EditText) getView().findViewById(R.id.sleep_form_text_sleep)).getText().toString();
+        String _wakeupTime = ((EditText) getView().findViewById(R.id.sleep_form_text_wake)).getText().toString();
 
-        date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment datePicker = new DatePickerFragment();
-                datePicker.show(getFragmentManager(), "Data Picker");
-            }
-        });
+        if (_date.isEmpty() || _sleepTime.isEmpty() || _wakeupTime.isEmpty()) {
+            return true;
+        }
+        return false;
     }
 }

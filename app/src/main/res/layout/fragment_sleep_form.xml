@@ -15,7 +15,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/sleep_form_btn_back" />
             <EditText
-                android:inputType="date"
+                android:inputType="textPersonName"
                 android:id="@+id/sleep_form_text_date"
                 android:hint="Date"
                 android:layout_width="match_parent"

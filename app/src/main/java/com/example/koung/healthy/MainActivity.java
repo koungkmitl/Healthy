@@ -17,16 +17,14 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
-    private SQLiteDatabase database;
-    private static final String SQL_CREATE_DATABASE = "CREATE TABLE IF NOT EXISTS Sleep" +
-            "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
-            "date VARCHAR(255)," +
+    private static final String SQL_CREATE_DATABASE = "CREATE TABLE IF NOT EXISTS sleep" +
+            "(date VARCHAR(255) PRIMARY KEY," +
             "sleeptime VARCHAR(255)," +
             "wakeuptime VARCHAR(255)," +
             "duration VARCHAR(255))";
 
     private void createDatabase() {
-        database = openOrCreateDatabase("SleepDB.db", MODE_PRIVATE, null);
+        SQLiteDatabase database = openOrCreateDatabase("my.db", MODE_PRIVATE, null);
         database.execSQL(SQL_CREATE_DATABASE);
     }
 
