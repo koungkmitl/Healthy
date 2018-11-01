@@ -1,8 +1,6 @@
 package com.example.koung.healthy.sleep;
 
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -38,12 +36,6 @@ public class SleepFragment extends Fragment {
 
     public SleepFragment() {
         sleepList = new ArrayList<>();
-        sleepAdapter = new SleepAdapter(
-                getActivity(),
-                R.layout.fragment_sleep_item,
-                sleepList
-        );
-        listView = getView().findViewById(R.id.sleep_listView_list);
     }
 
     @Nullable
@@ -61,7 +53,6 @@ public class SleepFragment extends Fragment {
         onClickAdd();
         onClickBack();
         showListView();
-        onClickListView();
     }
 
     private void onClickBack() {
@@ -106,6 +97,14 @@ public class SleepFragment extends Fragment {
 
         String _format;
 
+
+        sleepAdapter = new SleepAdapter(
+                getActivity(),
+                R.layout.fragment_sleep_item,
+                sleepList
+        );
+        listView = getView().findViewById(R.id.sleep_listView_list);
+
         listView.setAdapter(sleepAdapter);
 
         sleepAdapter.clear();
@@ -128,13 +127,5 @@ public class SleepFragment extends Fragment {
         sleepAdapter.notifyDataSetChanged();
     }
 
-    private void onClickListView() {
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Sleep _sleep = sleepList.get(position);
 
-            }
-        });
-    }
 }

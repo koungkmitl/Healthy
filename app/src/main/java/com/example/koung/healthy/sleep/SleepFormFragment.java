@@ -26,13 +26,11 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class SleepFormFragment extends Fragment {
 
-    private List<Sleep> sleepList;
     private SQLiteDatabase database;
     private CalculateDuration calculateDuration;
     private ContentValues preInsert;
 
     public SleepFormFragment() {
-        sleepList = new ArrayList<>();
         calculateDuration = new CalculateDuration();
         preInsert = new ContentValues();
     }
