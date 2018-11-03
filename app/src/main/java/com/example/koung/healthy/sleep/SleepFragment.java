@@ -34,8 +34,11 @@ public class SleepFragment extends Fragment {
     private SleepAdapter sleepAdapter;
     private ListView listView;
 
+    private Bundle bundle;
+
     public SleepFragment() {
         sleepList = new ArrayList<>();
+        bundle = new Bundle();
     }
 
     @Nullable
@@ -103,8 +106,8 @@ public class SleepFragment extends Fragment {
                 R.layout.fragment_sleep_item,
                 sleepList
         );
-        listView = getView().findViewById(R.id.sleep_listView_list);
 
+        listView = getView().findViewById(R.id.sleep_listView_list);
         listView.setAdapter(sleepAdapter);
 
         sleepAdapter.clear();
@@ -125,6 +128,29 @@ public class SleepFragment extends Fragment {
         query.close();
         database.close();
         sleepAdapter.notifyDataSetChanged();
+
+        onClickListView(listView);
+    }
+
+    private void onClickListView(ListView listView) {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Sleep sleep = (Sleep) parent.getItemAtPosition(position);
+
+                bundle.putString("date", sleep.getDate());
+
+                SleepFormFragment sleepFormFragment = new SleepFormFragment();
+                sleepFormFragment.setArguments(bundle);
+
+                getActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.main_view, sleepFormFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
     }
 
 
