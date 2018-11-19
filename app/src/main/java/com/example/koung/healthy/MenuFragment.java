@@ -34,6 +34,7 @@ public class MenuFragment extends Fragment {
         _menu.add("Add Weight");
         _menu.add("Weight History");
         _menu.add("Sleep");
+        _menu.add("Post");
         _menu.add("Logout");
     }
 
@@ -109,6 +110,13 @@ public class MenuFragment extends Fragment {
                             .replace(R.id.main_view, new SleepFragment())
                             .addToBackStack(null)
                             .commit();
+                } else if (position == 4) {
+//                    getActivity()
+//                            .getSupportFragmentManager()
+//                            .beginTransaction()
+//                            .replace(R.id.main_view, new)
+//                            .addToBackStack(null)
+//                            .commit();
                 } else {
                     firebaseAuth.signOut();
 
