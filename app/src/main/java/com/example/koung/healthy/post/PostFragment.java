@@ -97,7 +97,7 @@ public class PostFragment extends Fragment {
                         getActivity()
                                 .getSupportFragmentManager()
                                 .beginTransaction()
-                                .replace(R.id.main_view, new CommentFragment())
+                                .replace(R.id.main_view, commentFragment)
                                 .addToBackStack(null)
                                 .commit();
                     }

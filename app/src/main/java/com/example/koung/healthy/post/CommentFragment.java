@@ -70,32 +70,35 @@ public class CommentFragment extends Fragment {
 
         CommentService service = retrofit.create(CommentService.class);
 
-        Bundle bundle = new Bundle();
-        if (bundle == null) {
-            Log.d(TAG, "null");
+        Bundle bundle = getArguments();
+
+        if (bundle != null) {
+            String id = bundle.getString("id");
+
+            Call<List<Comment>> c = service.getData(id);
+            listView = getView().findViewById(R.id.comment_list);
+
+            c.enqueue(new Callback<List<Comment>>() {
+
+                @Override
+                public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
+                    Log.d(TAG, "success");
+                    commentAdapter = new CommentAdapter(getActivity(),
+                                                        R.layout.fragment_comment_item,
+                                                        response.body());
+                    listView.setAdapter(commentAdapter);
+                }
+
+                @Override
+                public void onFailure(Call<List<Comment>> call, Throwable t) {
+                    t.printStackTrace();
+                    Log.d(TAG, "Something wrong");
+                    Toast.makeText(getActivity(), "Something wrong", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Log.d(TAG, "bundle null");
         }
-        Log.d(TAG, "not null");
-        Log.d(TAG, bundle.getString("id"));
-//        String bundleId = bundle.getString("id");
-//        Call<List<Comment>> c = service.getData(bundleId);
-//
-//        Log.d(TAG, c.request().url().toString());
-//
-//        c.enqueue(new Callback<List<Comment>>() {
-//            @Override
-//            public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
-//                commentAdapter = new CommentAdapter(getActivity(),
-//                                                    R.layout.fragment_comment_item,
-//                                                    response.body());
-//                listView.setAdapter(commentAdapter);
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Comment>> call, Throwable t) {
-//                t.printStackTrace();
-//                Log.d(TAG, "Something wrong");
-//                Toast.makeText(getActivity(), "Something wrong", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+
     }
 }
